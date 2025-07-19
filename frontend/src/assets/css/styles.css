@@ -1,0 +1,31 @@
+body {
+    background-color: #002D62;
+}
+
+.title-text {
+    color: #002D62;
+}
+.body-text {
+    color: #002D62;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+.home-info {
+    background-color: #BEC0C2;
+    box-shadow: 0 0 15px rgba(0,0,0,0.4);
+}
+
+#root {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container {
+    flex: 1;
+}
+
+.navbar{
+    margin-bottom: 0 !important;
+}
+
