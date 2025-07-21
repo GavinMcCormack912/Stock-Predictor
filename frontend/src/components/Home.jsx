@@ -1,6 +1,8 @@
 import React from 'react' 
-
-export default function Header() {
+import Footer from './Footer.jsx'
+import Navbar from './Navbar.jsx'
+import Button from './Button.jsx'
+export default function Home() {
     return (
     <>
         <div className='container'>
@@ -11,7 +13,7 @@ export default function Header() {
                      100-day and 200-day moving averages to forecast future stock prices. This predictive insight is designed to support 
                      informed trading and investment decisions.
                 </p>
-                <a className="btn btn-primary" href="">Login</a>
+                <Button classes="btn btn-primary" path="/login">Login</Button>
             </div>
         </div>
     </>

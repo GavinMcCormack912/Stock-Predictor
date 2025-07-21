@@ -1,9 +1,10 @@
 import React from 'react' 
+import { Link } from 'react-router-dom'
 
-export default function Button({classes, children}) {
+export default function Button({classes, path, children}) {
     return (
     <>
-        <a className={`btn ${classes}`} href="">{children}</a>
+        <Link className={`btn ${classes}`} to={path}>{children}</Link>
     </>
     )
 }
