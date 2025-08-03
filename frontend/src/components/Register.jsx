@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 import axios from 'axios'
-import { TailSpin, SpinningCircles } from 'react-loading-icons'
+import { TailSpin } from 'react-loading-icons'
 
 export default function Register() {
     const [username, setUsername] = useState('')
@@ -39,7 +39,7 @@ export default function Register() {
         <>
             <div className='container'>
                 <div className="row justify-content-center">
-                    <div className="col-md-6 p-5 rounded" style={{backgroundColor: "#C7C6C1"}}>
+                    <div className="col-md-6 p-5 rounded" style={{backgroundColor: "#c1c2a6ff"}}>
                         <h3 className='text-primary text-center mb-3'>Create an account</h3>
                         <form onSubmit={handleRegistration}>
                             {errors.username && <small><div className = "text-danger">{errors.username}</div></small>}

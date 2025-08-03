@@ -6,19 +6,22 @@ import Register from './components/Register.jsx'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Login from './components/Login.jsx'
+import AuthProvider from './AuthProvider.jsx'
 function App() {
 
   return ( 
   <>
-    <BrowserRouter>
-     <Navbar />
-        <Routes>
-          <Route path='/' element={<Home />}/>
-          <Route path='/register' element={<Register/>} />
-          <Route path='/login' element={<Login/>} />
-        </Routes>
-      <Footer />
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+      <Navbar />
+          <Routes>
+            <Route path='/' element={<Home />}/>
+            <Route path='/register' element={<Register/>} />
+            <Route path='/login' element={<Login/>} />
+          </Routes>
+        <Footer />
+      </BrowserRouter>
+    </AuthProvider>
   </>
   )
 }
