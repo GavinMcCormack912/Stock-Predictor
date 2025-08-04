@@ -21,7 +21,7 @@ export default function Navbar() {
          <div>
             {isLoggedIn ? (
                 <>
-                <Button classes="btn-warning me-1" path="/dashboard"> DashBoard </Button>
+                <Button classes="btn-warning me-1" path="/dashboard"> Dashboard </Button>
                 <button onClick={handleLogout} className='btn btn-danger'> Logout </button>
                 
                 </>

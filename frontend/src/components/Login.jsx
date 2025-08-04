@@ -26,9 +26,11 @@ export default function Login() {
             localStorage.setItem('accessToken', response.data.access)
             localStorage.setItem('refreshToken', response.data.refresh)
             console.log('login success!')
+            console.log(response.data.access)
+            console.log(response.data.refresh)
             setSuccess(true)
             setIsLoggedIn(true)
-            navigate('/')
+            navigate('/dashboard')
         }
         catch(error) {
             setError('Invalid Credentials!!')
