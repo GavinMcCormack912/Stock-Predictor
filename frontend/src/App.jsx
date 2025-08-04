@@ -7,6 +7,7 @@ import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Login from './components/Login.jsx'
 import AuthProvider from './AuthProvider.jsx'
+import Dashboard from './components/dashboard/dashboard.jsx'
 function App() {
 
   return ( 
@@ -18,6 +19,7 @@ function App() {
             <Route path='/' element={<Home />}/>
             <Route path='/register' element={<Register/>} />
             <Route path='/login' element={<Login/>} />
+            <Route path='dashboard' element={<Dashboard/>} />
           </Routes>
         <Footer />
       </BrowserRouter>

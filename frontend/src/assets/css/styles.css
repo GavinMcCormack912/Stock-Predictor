@@ -29,3 +29,7 @@ body {
     margin-bottom: 0 !important;
 }
 
+.home-link:hover {
+    background-color: #6c757d !important;
+}
+

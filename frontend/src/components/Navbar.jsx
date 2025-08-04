@@ -16,10 +16,16 @@ export default function Navbar() {
     }
     return (
         <nav className='navbar container pt-3 pb-3 align-items-start'>
-         <Link className='navbar-brand text-light border border-secondary rounded p-2' to="/"><FaHome style={{ marginBottom: "0.25em"}}/> Stock Prediction</Link>
+         <Link className='navbar-brand text-light border border-secondary rounded p-2 home-link' to="/"><FaHome style={{ marginBottom: "0.25em"}}/> Stock Prediction</Link>
 
          <div>
-            {isLoggedIn ? (<button onClick={handleLogout} className='btn btn-danger'> Logout </button>) : (
+            {isLoggedIn ? (
+                <>
+                <Button classes="btn-warning me-1" path="/dashboard"> DashBoard </Button>
+                <button onClick={handleLogout} className='btn btn-danger'> Logout </button>
+                
+                </>
+            ) : (
             <>
                 <Button classes="btn-warning me-1" path="/login">Login</Button>
                 <Button classes="btn-outline-warning me-1" path="/register">Register Account</Button>

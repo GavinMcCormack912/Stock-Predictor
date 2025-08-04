@@ -13,7 +13,7 @@ export default function Home() {
                      100-day and 200-day moving averages to forecast future stock prices. This predictive insight is designed to support 
                      informed trading and investment decisions.
                 </p>
-                <Button classes="btn btn-primary" path="/login">Login</Button>
+                <Button classes="btn btn-primary" path="/dashboard">Explore</Button>
             </div>
         </div>
     </>

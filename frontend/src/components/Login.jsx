@@ -24,7 +24,7 @@ export default function Login() {
             
             const response = await axios.post('http://127.0.0.1:8000/api/v1/token/', userData)
             localStorage.setItem('accessToken', response.data.access)
-            localStorage.setItem('refresehToken', response.data.refresh)
+            localStorage.setItem('refreshToken', response.data.refresh)
             console.log('login success!')
             setSuccess(true)
             setIsLoggedIn(true)
