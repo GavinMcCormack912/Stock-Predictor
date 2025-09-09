@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 from decouple import config
 from datetime import timedelta
+import dj_database_url
+import os
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -26,7 +29,16 @@ SECRET_KEY = config("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = []
+# 🔒 SECURITY: Dynamic host configuration
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1').split(',')
+
+# Add Render-specific hosts
+if 'RENDER' in os.environ:
+    ALLOWED_HOSTS.extend([
+        '.onrender.com',
+        'stocktracker-backend.onrender.com',
+        'stocktracker-frontend.onrender.com'
+    ])
 
 
 # Application definition
@@ -43,6 +55,7 @@ INSTALLED_APPS = [
     "api",
     "corsheaders",
     "rest_framework_simplejwt",
+    "storages",
 ]
 
 MIDDLEWARE = [
@@ -79,12 +92,11 @@ WSGI_APPLICATION = "stock_main.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
+# 🗄️ DATABASE: Environment-based configuration
+if config('DATABASE_URL', default=None):
+    DATABASES = {'default': dj_database_url.parse(config('DATABASE_URL'))}
+else:
+    DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": BASE_DIR / "db.sqlite3"}}
 
 
 # Password validation
@@ -122,6 +134,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = "static/"
+# 📁 STATIC FILES: Production setup
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
@@ -131,7 +145,11 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',
-]
+    'http://localhost:80',
+    'http://localhost',
+    'https://stocktracker-frontend.onrender.com',  # Your Render frontend URL
+    'https://yourdomain.com',  # Your custom domain
+] + [f'http://{host}' for host in config('ALLOWED_HOSTS', default='').split(',') if host] + [f'https://{host}' for host in config('ALLOWED_HOSTS', default='').split(',') if host]
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -148,3 +166,27 @@ SIMPLE_JWT = {
 # Media files configuration
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# ☁️ S3 STORAGE: Conditional AWS integration
+if config('AWS_STORAGE_BUCKET_NAME', default=None):
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
+    AWS_S3_REGION_NAME = config('AWS_S3_REGION_NAME', default='us-east-1')
+    AWS_DEFAULT_ACL = 'public-read'
+    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
+
+# Render-specific settings
+if 'RENDER' in os.environ:
+    # Security settings for production
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_SSL_REDIRECT = True
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECURE_BROWSER_XSS_FILTER = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True

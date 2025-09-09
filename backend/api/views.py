@@ -42,10 +42,7 @@ class StockPredictionView(APIView):
 
             # Save the plot to a file
             plot_img_path = f'{ticker}_plot.png'
-            image_path = os.path.join(settings.MEDIA_ROOT, plot_img_path)
-            plt.savefig(image_path)
-            plt.close()
-            plot_img = settings.MEDIA_URL + plot_img_path
+            plot_img = save_plot(plot_img_path)
 
             # 100-day MVA
             df['MA_100'] = df['Close'].rolling(100).mean()
@@ -89,7 +86,7 @@ class StockPredictionView(APIView):
             minScaler = MinMaxScaler(feature_range=(-1,1))
             yScaler = MinMaxScaler(feature_range=(-1,1))
             # Model
-            model = load_model('../Resources/stock_prediction_model.keras')
+            model = load_model('/app/Resources/stock_prediction_model.keras')
 
             # Input data
             past_100 = data_train[['Open', 'MA_30', 'MA_100', 'Vol_20d', 'Vol_60d']].tail(100)
